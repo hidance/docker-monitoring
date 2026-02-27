@@ -15,6 +15,9 @@ services:
     image: grafana/grafana
     container_name: grafana_cont
     restart: always
+    environment:
+      - GF_SERVER_ROOT_URL=${GF_SERVER_ROOT_URL}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
     ports:
       - '3000:3000'
     volumes:
