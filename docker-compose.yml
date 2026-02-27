@@ -8,6 +8,7 @@ services:
       - '9090:9090'
     volumes:
       - 'prometheus_data:/prometheus'
+      - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro'
     networks:
       - net01
 
@@ -24,6 +25,25 @@ services:
       - 'grafana_data:/var/lib/grafana'
     networks:
       - net01
+  node-exporter:
+    image: prom/node-exporter
+    container_name: node_exporter_cont
+    restart: always
+    pid: host 
+    ports: 
+      - '9100:9100'
+    volumes:
+      - '/proc:/host/proc:ro'
+      - '/sys:/host/sys:ro'
+      - '/:/rootfs:ro'
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - net01
+    
 
 networks:
  net01:
