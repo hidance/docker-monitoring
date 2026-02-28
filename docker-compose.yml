@@ -43,6 +43,22 @@ services:
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     networks:
       - net01
+  cadvisor:
+    image: ghcr.io/google/cadvisor:0.55.1
+    container_name: cadvisor_cont
+    restart: unless-stopped
+    ports: 
+      - '8080:8080'
+    privileged: true  
+    volumes:
+      - '/:/rootfs:ro'
+      - '/var/run:/var/run:rw'
+      - '/sys:/sys:ro'
+      - '/var/lib/docker/:/var/lib/docker:ro'
+    devices:
+      - /dev/kmsg
+    networks:
+      - net01
     
 
 networks:
